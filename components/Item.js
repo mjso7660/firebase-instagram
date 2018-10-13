@@ -18,28 +18,46 @@ export default class Item extends React.Component {
   }
 
   render() {
-    const { text, name, imageWidth, imageHeight, uid, image } = this.props;
+    const { text, name, imageWidth, imageHeight, uid, image, image_profile, video } = this.props;
 
     // Reduce the name to something
     const imgW = imageWidth || this.state.width;
     const imgH = imageHeight || this.state.height;
     const aspect = imgW / imgH || 1;
-
-    return (
-      <View>
-        <Header image={{ uri: image }} name={name} />
-        <Image
-          resizeMode="contain"
-          style={{
-            backgroundColor: '#D8D8D8',
-            width: '100%',
-            aspectRatio: aspect,
-          }}
-          source={{ uri: image }}
-        />
-        <Metadata name={name} description={text} />
-      </View>
-    );
+    
+    if (!video) {
+      return (
+        <View>
+          <Header image={{ uri: image_profile }} name={name} />
+          <Image
+            resizeMode="contain"
+            style={{
+              backgroundColor: '#D8D8D8',
+              width: '100%',
+              aspectRatio: aspect,
+            }}
+            source={{ uri: image }}
+          />
+          <Metadata name={name} description={text} />
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Header image={{ uri: image_profile }} name={name} />
+          <Video
+            resizeMode="contain"
+            style={{
+              backgroundColor: '#D8D8D8',
+              width: '100%',
+              aspectRatio: aspect,
+            }}
+            source={{ uri: image }}
+          />
+          <Metadata name={name} description={text} />
+        </View>
+      );
+    }
   }
 }
 
@@ -51,10 +69,10 @@ const Metadata = ({ name, description }) => (
   </View>
 );
 
-const Header = ({ name, image }) => (
+const Header = ({ name, image_profile }) => (
   <View style={[styles.row, styles.padding]}>
     <View style={styles.row}>
-      <Image style={styles.avatar} source={image} />
+      <Image style={styles.avatar} source={image_profile} />
       <Text style={styles.text}>{name}</Text>
     </View>
     <Icon name="ios-more" />

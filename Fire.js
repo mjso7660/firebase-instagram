@@ -9,6 +9,7 @@ const firebase = require('firebase');
 require('firebase/firestore');
 
 const collectionName = 'snack-SJucFknGX';
+const collectionNameProfile = 'user_profile';
 
 class Fire {
   constructor() {
@@ -71,10 +72,16 @@ class Fire {
     return uploadPhoto(uri, path);
   };
 
+  uploadProfileAsync = async uri => {
+    const path = `${collectionNameProfile}/${this.uid}/${uuid.v4()}.jpg`;
+    return uploadPhoto(uri, path);
+  };
+
   post = async ({ text, image: localUri }) => {
     try {
       const { uri: reducedImage, width, height } = await shrinkImageAsync(
         localUri,
+        500
       );
 
       const remoteUri = await this.uploadPhotoAsync(reducedImage);
@@ -92,9 +99,35 @@ class Fire {
     }
   };
 
+  post_profile = async ({ text, image: localUri }) => {
+    try {
+      const { uri: reducedImage, width, height } = await shrinkImageAsync(
+        localUri,
+        60
+      );
+
+      const remoteUri = await this.uploadProfileAsync(reducedImage);
+      this.collection_profile.add({
+        text,
+        uid: this.uid,
+        timestamp: this.timestamp,
+        imageWidth: width,
+        imageHeight: height,
+        image: remoteUri,
+        user: getUserInfo(),
+      });
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
   // Helpers
   get collection() {
     return firebase.firestore().collection(collectionName);
+  }
+
+  get collection_profile() {
+    return firebase.firestore().collection(collectionNameProfile);
   }
 
   get uid() {

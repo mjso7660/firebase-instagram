@@ -1,4 +1,7 @@
 // Import React Navigation
+import React from 'react'
+import { Image, View } from 'react-native';
+
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -40,13 +43,30 @@ const navigator = createBottomTabNavigator(
   },
 );
 
+class LogoTitle extends React.Component {
+  render() {
+    return (
+      <View style={{flex:1, flexDirection:'row',}}>
+        <Image
+          source={require('./assets/icons/logo.png')}
+          style={{ width: 50, height: 50 }}
+        />
+        <Image
+          source={require('./assets/icons/name.png')}
+          style={{ width: 180, height: 50 }}
+        />
+      </View>
+    );
+  }
+}
+
 // Create the navigator that pushes high-level screens like the `NewPost` screen.
 const stackNavigator = createStackNavigator(
   {
     Main: {
       screen: navigator,
       // Set the title for our app when the tab bar screen is present
-      navigationOptions: { title: 'Instaham 🐷' },
+      navigationOptions: { headerTitle: <LogoTitle /> },
     },
     // This screen will not have a tab bar
     NewPost: NewPostScreen,

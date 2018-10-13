@@ -1,7 +1,7 @@
 import { ImageManipulator } from 'expo';
 
-function reduceImageAsync(uri) {
-  return ImageManipulator.manipulate(uri, [{ resize: { width: 500 } }], {
+function reduceImageAsync(uri, _width) {
+  return ImageManipulator.manipulate(uri, [{ resize: { width: _width } }], {
     compress: 0.5,
   });
 }
